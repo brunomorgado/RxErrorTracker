@@ -1,0 +1,29 @@
+PODS:
+  - Nimble (3.2.0)
+  - Quick (0.9.3)
+  - RxCocoa (2.6.0):
+    - RxSwift (~> 2.5)
+  - RxErrorTracker (0.1.0):
+    - RxCocoa (~> 2.6)
+    - RxSwift (~> 2.6)
+  - RxSwift (2.6.0)
+
+DEPENDENCIES:
+  - Nimble (~> 3.0)
+  - Quick (~> 0.8)
+  - RxErrorTracker (from `../`)
+
+EXTERNAL SOURCES:
+  RxErrorTracker:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Nimble: 703854335d181df169bbca9c97117b5cf8c47c1d
+  Quick: 13a2a2b19a5d8e3ed4fd0c36ee46597fd77ebf71
+  RxCocoa: 89ab00d5753502520227940e3a0e0a0413683c6b
+  RxErrorTracker: 7680d7ab894f5680090d21be21b451bfc971620f
+  RxSwift: 77f3a0b15324baa7a1c9bfa9f199648a82424e26
+
+PODFILE CHECKSUM: 2f9d94358121e4c628d1a9105fab51ae1ccb4573
+
+COCOAPODS: 1.0.1
