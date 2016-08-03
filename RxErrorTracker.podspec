@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
 TODO: Add long description of the pod here.
                        DESC
 
-  s.homepage         = 'https://github.com/brunomorgado'
+  s.homepage         = 'https://github.com/brunomorgado/RxErrorTracker'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Bruno Morgado' => 'brunofcmorgado@gmail.com' }
   s.source           = { :git => 'https://github.com/brunomorgado/RxErrorTracker.git', :tag => s.version.to_s }
