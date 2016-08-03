@@ -1,6 +1,6 @@
 # RxErrorTracker
 
-[![CI Status](http://img.shields.io/travis/Bruno Morgado/RxErrorTracker.svg?style=flat)](https://travis-ci.org/Bruno Morgado/RxErrorTracker)
+[![CI Status](http://img.shields.io/travis/brunomorgado/RxErrorTracker.svg?style=flat)](https://travis-ci.org/brunomorgado/RxErrorTracker)
 [![Version](https://img.shields.io/cocoapods/v/RxErrorTracker.svg?style=flat)](http://cocoapods.org/pods/RxErrorTracker)
 [![License](https://img.shields.io/cocoapods/l/RxErrorTracker.svg?style=flat)](http://cocoapods.org/pods/RxErrorTracker)
 [![Platform](https://img.shields.io/cocoapods/p/RxErrorTracker.svg?style=flat)](http://cocoapods.org/pods/RxErrorTracker)
@@ -22,7 +22,7 @@ pod "RxErrorTracker"
 
 ## Author
 
-Bruno Morgado, Bruno Morgado@gmail.com
+Bruno Morgado, brunofcmorgado@gmail.com
 
 ## License
 
