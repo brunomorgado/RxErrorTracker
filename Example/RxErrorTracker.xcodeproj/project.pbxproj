@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0B5B0DD31D529B480025ABF6 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B5B0DD21D529B470025ABF6 /* ViewModel.swift */; };
-		0B5B0DD41D529B480025ABF6 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B5B0DD21D529B470025ABF6 /* ViewModel.swift */; };
+		0B0462491D53DF3F00FA22DC /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0462481D53DF3F00FA22DC /* ViewModel.swift */; };
+		0B04624A1D53DF3F00FA22DC /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0462481D53DF3F00FA22DC /* ViewModel.swift */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
@@ -31,7 +31,7 @@
 
 /* Begin PBXFileReference section */
 		01911C3B0A7F6464AEC57B4E /* Pods-RxErrorTracker_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxErrorTracker_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-RxErrorTracker_Example/Pods-RxErrorTracker_Example.release.xcconfig"; sourceTree = "<group>"; };
-		0B5B0DD21D529B470025ABF6 /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		0B0462481D53DF3F00FA22DC /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		0E50F5148200F078AF9C1D18 /* RxErrorTracker.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; lineEnding = 0; name = RxErrorTracker.podspec; path = ../RxErrorTracker.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = "<none>"; };
 		2A1E58FB3934400147540CCB /* Pods-RxErrorTracker_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxErrorTracker_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RxErrorTracker_Tests/Pods-RxErrorTracker_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		4829F90045373DBF64930C42 /* Pods-RxErrorTracker_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxErrorTracker_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RxErrorTracker_Tests/Pods-RxErrorTracker_Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -107,11 +107,11 @@
 			children = (
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
+				0B0462481D53DF3F00FA22DC /* ViewModel.swift */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
-				0B5B0DD21D529B470025ABF6 /* ViewModel.swift */,
 			);
 			name = "Example for RxErrorTracker";
 			path = RxErrorTracker;
@@ -364,8 +364,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
-				0B5B0DD31D529B480025ABF6 /* ViewModel.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				0B0462491D53DF3F00FA22DC /* ViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -373,8 +373,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0B5B0DD41D529B480025ABF6 /* ViewModel.swift in Sources */,
 				607FACEC1AFB9204008FA782 /* Tests.swift in Sources */,
+				0B04624A1D53DF3F00FA22DC /* ViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

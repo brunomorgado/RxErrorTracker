@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <viewController id="vXZ-lx-hvc" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="vXZ-lx-hvc" customClass="ViewController" customModule="RxErrorTracker_Example" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
@@ -15,8 +17,48 @@
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R32-2y-w1R">
+                                <rect key="frame" x="277" y="285" width="46" height="30"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="didTapButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Jcc-uj-8bj"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="prW-zJ-72K">
+                                <rect key="frame" x="20" y="-150" width="560" height="150"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EHu-JA-bPg">
+                                        <rect key="frame" x="0.0" y="0.0" width="560" height="150"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="1" green="0.65059188160000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="150" id="b3E-YS-GZA"/>
+                                    <constraint firstAttribute="trailing" secondItem="EHu-JA-bPg" secondAttribute="trailing" id="hIM-Rs-pt2"/>
+                                    <constraint firstAttribute="bottom" secondItem="EHu-JA-bPg" secondAttribute="bottom" id="sLZ-Mc-RnP"/>
+                                    <constraint firstItem="EHu-JA-bPg" firstAttribute="leading" secondItem="prW-zJ-72K" secondAttribute="leading" id="xE9-dR-pqb"/>
+                                    <constraint firstItem="EHu-JA-bPg" firstAttribute="top" secondItem="prW-zJ-72K" secondAttribute="top" id="xKQ-Ps-OLx"/>
+                                </constraints>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="prW-zJ-72K" secondAttribute="trailing" id="L4I-zt-qeP"/>
+                            <constraint firstItem="R32-2y-w1R" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" id="QHO-LD-lJQ"/>
+                            <constraint firstItem="prW-zJ-72K" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="topMargin" constant="-150" id="Tdm-GA-1Az"/>
+                            <constraint firstItem="R32-2y-w1R" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="vJa-kt-p4V"/>
+                            <constraint firstItem="prW-zJ-72K" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="z1s-De-aXv"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="button" destination="R32-2y-w1R" id="dH4-zg-zA2"/>
+                        <outlet property="errorBannerTopConstraint" destination="Tdm-GA-1Az" id="KwF-vO-prK"/>
+                        <outlet property="messageLabel" destination="EHu-JA-bPg" id="DeH-jh-irR"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>

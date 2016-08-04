@@ -16,6 +16,10 @@ public enum RxErrorTrackerError: ErrorType {
     case ConditionNotMet
 }
 
+/**
+ Keeps track of the error associated with the source observable.
+ */
+
 public class RxErrorTracker : DriverConvertibleType {
     public typealias E = ErrorType?
     
@@ -54,7 +58,7 @@ public class RxErrorTracker : DriverConvertibleType {
     }
     
     public func asDriver() -> Driver<E> {
-        return _element.debug()
+        return _element
     }
 }
 
@@ -87,6 +91,7 @@ private extension RxErrorTracker {
 }
 
 public extension ObservableConvertibleType {
+    
     func trackError(errorTracker: RxErrorTracker) -> Observable<E> {
         return errorTracker.trackError(self, condition: true)
     }

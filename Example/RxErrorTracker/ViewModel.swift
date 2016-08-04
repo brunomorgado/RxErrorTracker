@@ -10,6 +10,16 @@ import RxSwift
 import RxCocoa
 import RxErrorTracker
 
+class User {
+    var name: String?
+    var age: Int?
+    
+    init(name: String?, age: Int?) {
+        self.name = name
+        self.age = age
+    }
+}
+
 enum Error: ErrorType {
     case FetchDataFailed
 }
@@ -25,19 +35,16 @@ class ViewModel {
     
     typealias Data = AnyObject?
     
-    let nameNilErrorTracker = RxErrorTracker()
-    let ageNilErrorTracker = RxErrorTracker()
-    let fetchDataErrorTracker = RxErrorTracker()
+    var errorBannerVisibilityUpdate: Driver<Bool>
+    var errorBannerMessageUpdate: Driver<String>
+    
+    private let nameNilErrorTracker = RxErrorTracker()
+    private let ageNilErrorTracker = RxErrorTracker()
+    private let fetchDataErrorTracker = RxErrorTracker()
+    private let disposeBag = DisposeBag()
     
     init() {
-        let user = User()
-        
-        let fetch = fetchSomeData(withUser: user)
-            .trackError(nameNilErrorTracker, resetTime: 5, failWhenNotMet: user.name != nil)
-            .trackError(ageNilErrorTracker, resetTime: 5, failWhenNotMet: user.age != nil)
-            .trackError(fetchDataErrorTracker)
-        
-        var errorBannerStateUpdate: Driver<ErrorBannerState> = Driver.combineLatest(
+        let errorBannerStateUpdate: Driver<ErrorBannerState> = Driver.combineLatest(
             nameNilErrorTracker,
             ageNilErrorTracker,
             fetchDataErrorTracker) {($0, $1, $2)}
@@ -53,7 +60,7 @@ class ViewModel {
                 }
             }
         
-        var errorBannerMessageUpdate = errorBannerStateUpdate
+        errorBannerMessageUpdate = errorBannerStateUpdate
             .map { state -> String in
                 switch state {
                 case .NilUserName:
@@ -67,7 +74,7 @@ class ViewModel {
                 }
             }
         
-        var errorBannerVisibilityUpdate = errorBannerStateUpdate
+        errorBannerVisibilityUpdate = errorBannerStateUpdate
             .map { state -> Bool in
                 switch state {
                 case .Hidden:
@@ -75,18 +82,24 @@ class ViewModel {
                 default:
                     return true
                 }
-        }
+            }
     }
     
-    func fetchSomeData(withUser user: User) -> Driver<Data?> {
-        return Observable.error(Error.FetchDataFailed)
-            .asDriver(onErrorJustReturn: nil)
-        
-//        return Driver.just(Data())
+    func refresh() {
+        let user = User(name: "Bruno", age: nil)
+        fetchSomeData(withUser: user)
+            .trackError(fetchDataErrorTracker)
+            .trackError(nameNilErrorTracker, resetTime: 4, failWhenNotMet: user.name != nil)
+            .trackError(ageNilErrorTracker, resetTime: 4, failWhenNotMet: user.age != nil)
+            .subscribe()
+            .addDisposableTo(disposeBag)
     }
 }
 
-class User {
-    var name: String?
-    var age: Int?
+private extension ViewModel {
+    
+    func fetchSomeData(withUser user: User) -> Observable<Data?> {
+        return Observable.error(Error.FetchDataFailed)
+//        return Observable.just(Data())
+    }
 }
