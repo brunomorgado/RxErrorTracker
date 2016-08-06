@@ -3,10 +3,7 @@ use_frameworks!
 target 'RxErrorTracker_Example' do
   pod 'RxErrorTracker', :path => '../'
 
-  target 'RxErrorTracker_Tests' do
+  target 'RxErrorTracker_ExampleTests' do
     inherit! :search_paths
-
-    pod 'Quick', '~> 0.8'
-  pod 'Nimble', '~> 3.0'
   end
 end

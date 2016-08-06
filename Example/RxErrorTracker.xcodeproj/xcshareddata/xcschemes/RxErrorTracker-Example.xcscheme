@@ -52,6 +52,16 @@
                ReferencedContainer = "container:RxErrorTracker.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "0B3945F01D5697C500ABFC30"
+               BuildableName = "RxErrorTracker_ExampleTests.xctest"
+               BlueprintName = "RxErrorTracker_ExampleTests"
+               ReferencedContainer = "container:RxErrorTracker.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

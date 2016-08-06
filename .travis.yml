@@ -1,3 +1,5 @@
 language: objective-c
 osx_image: xcode8
-
+xcode_workspace: Example/RxErrorTracker.xcworkspace
+xcode_scheme: RxErrorTracker-Example
+podfile: Example/Podfile
