@@ -14,7 +14,6 @@ let kErrorBannerHeight: CGFloat = 150
 
 class ViewController: UIViewController {
     
-    @IBOutlet weak var button: UIButton!
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var errorBannerTopConstraint: NSLayoutConstraint!
     
@@ -40,7 +39,11 @@ class ViewController: UIViewController {
     
     // User actions
 
-    @IBAction func didTapButton(sender: AnyObject) {
-        viewModel.refresh()
+    @IBAction func didTapFetchFriendsButton(sender: AnyObject) {
+        viewModel.fetchFriends()
+    }
+    
+    @IBAction func didTapFetchUserButton(sender: AnyObject) {
+        viewModel.fetchUser()
     }
 }

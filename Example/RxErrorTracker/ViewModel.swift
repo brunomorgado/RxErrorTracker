@@ -11,86 +11,77 @@ import RxCocoa
 import RxErrorTracker
 
 class User {
-    var name: String?
-    var age: Int?
+    var name: String
     
-    init(name: String?, age: Int?) {
+    init(name: String) {
         self.name = name
-        self.age = age
     }
 }
 
 enum Error: ErrorType {
-    case FetchDataFailed
-}
-
-enum ErrorBannerState {
-    case NilUserName
-    case NilUserAge
-    case ServerError(error: ErrorType?)
-    case Hidden
+    case Internal
+    case FetchUserFailed
+    case FetchFriendsFailed
+    
+    var description: String {
+        switch self {
+        case Internal:
+            return "Internal error!!"
+        case FetchUserFailed:
+            return "Failed fetching user!!"
+        case .FetchFriendsFailed:
+            return "Failed fetching friends!!"
+        }
+    }
 }
 
 class ViewModel {
     
-    typealias Data = AnyObject?
-    
     var errorBannerVisibilityUpdate: Driver<Bool>
     var errorBannerMessageUpdate: Driver<String>
-    
-    private let nameNilErrorTracker = RxErrorTracker()
-    private let ageNilErrorTracker = RxErrorTracker()
-    private let fetchDataErrorTracker = RxErrorTracker()
+
+    private let errorTracker = RxErrorTracker()
     private let disposeBag = DisposeBag()
     
     init() {
-        let errorBannerStateUpdate: Driver<ErrorBannerState> = Driver.combineLatest(
-            nameNilErrorTracker,
-            ageNilErrorTracker,
-            fetchDataErrorTracker) {($0, $1, $2)}
-            .map { ( nameNilError, ageNilError, fetchDataError) -> ErrorBannerState in
-                if nameNilError != nil {
-                    return .NilUserName
-                } else if ageNilError != nil {
-                    return .NilUserAge
-                } else if let _fetchDataError = fetchDataError {
-                    return .ServerError(error: _fetchDataError)
-                } else {
-                    return .Hidden
-                }
-            }
-        
-        errorBannerMessageUpdate = errorBannerStateUpdate
-            .map { state -> String in
-                switch state {
-                case .NilUserName:
-                    return "Name cannot be nil!!"
-                case .NilUserAge:
-                    return "Age cannot be nil!!"
-                case .ServerError(_):
-                    return "Failed trying to fetch data!!"
-                case .Hidden:
+        errorBannerMessageUpdate = errorTracker
+            .map { error -> String in
+                guard let _error = error as? Error else {
                     return ""
                 }
+                return _error.description
             }
         
-        errorBannerVisibilityUpdate = errorBannerStateUpdate
-            .map { state -> Bool in
-                switch state {
-                case .Hidden:
-                    return false
-                default:
-                    return true
-                }
+        errorBannerVisibilityUpdate = errorTracker
+            .map { error -> Bool in
+                return error != nil
             }
     }
     
-    func refresh() {
-        let user = User(name: "Bruno", age: nil)
-        fetchSomeData(withUser: user)
-            .trackError(fetchDataErrorTracker)
-            .trackError(nameNilErrorTracker, resetTime: 4, failWhenNotMet: user.name != nil)
-            .trackError(ageNilErrorTracker, resetTime: 4, failWhenNotMet: user.age != nil)
+    func fetchUser() {
+        let id: Int? = 1
+        
+        guard let _id = id else {
+            errorTracker.updateWithError(Error.Internal)
+            return
+        }
+
+        fetchUserObservable(withId: _id)
+            .trackError(errorTracker, resetTime: 4)
+            .subscribe()
+            .addDisposableTo(disposeBag)
+    }
+    
+    func fetchFriends() {
+        let user: User? = nil// User(name: "Bruno")
+        
+        guard let _user = user else {
+            errorTracker.updateWithError(Error.Internal)
+            return
+        }
+        
+        fetchFriendsObservable(withUser: _user)
+            .trackError(errorTracker, resetTime: 4)
             .subscribe()
             .addDisposableTo(disposeBag)
     }
@@ -98,8 +89,11 @@ class ViewModel {
 
 private extension ViewModel {
     
-    func fetchSomeData(withUser user: User) -> Observable<Data?> {
-        return Observable.error(Error.FetchDataFailed)
-//        return Observable.just(Data())
+    func fetchUserObservable(withId id: Int) -> Observable<User?> {
+        return Observable.error(Error.FetchUserFailed)
+    }
+    
+    func fetchFriendsObservable(withUser user: User) -> Observable<AnyObject?> {
+        return Observable.error(Error.FetchFriendsFailed)
     }
 }
