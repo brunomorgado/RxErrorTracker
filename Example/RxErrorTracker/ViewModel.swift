@@ -73,7 +73,7 @@ class ViewModel {
     }
     
     func fetchFriends() {
-        let user: User? = nil// User(name: "Bruno")
+        let user: User? = nil// User(name: "brunofc")
         
         guard let _user = user else {
             errorTracker.updateWithError(Error.Internal)
