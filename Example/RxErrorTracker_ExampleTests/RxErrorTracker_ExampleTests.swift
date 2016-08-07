@@ -23,7 +23,7 @@ class RxErrorTracker_ExampleTests: XCTestCase {
     }
     
     func testExample() {
-        XCTAssertTrue(1==0)
+        XCTAssertTrue(0==0)
     }
     
     func testPerformanceExample() {
