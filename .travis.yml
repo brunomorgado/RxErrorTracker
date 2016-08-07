@@ -7,5 +7,6 @@ before_install:
   - brew outdated xctool || brew upgrade xctool
   - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
   - gem install xcpretty-travis-formatter --no-rdoc --no-ri --no-document --quiet
+  - pod install --project-directory=Example
 script:
   - xcodebuild test -workspace Example/RxErrorTracker.xcworkspace -scheme RxErrorTracker-Example -destination 'platform=iOS Simulator,name=iPhone 6,OS=9.3' | xcpretty
