@@ -16,6 +16,7 @@ You can push new errors to the RxErrorTracker sequence via direct update or by t
 Additionally, you can define reset times after which the RxErrorTracker will signal nil.
 
 ```swift
+let errorTracker = RxErrorTracker()
 let disposeBag = DisposeBag()
 let id: Int? = 1
         
