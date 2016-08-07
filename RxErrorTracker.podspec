@@ -3,11 +3,7 @@ Pod::Spec.new do |s|
   s.version          = '0.1.0'
   s.summary          = 'An RxSwifty approach to error handling.'
 
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!
+RxErrorTracker provides a clean, integrated and easy to use approach to error handling. It is based on RxSwift and represents an observable sequence of errors Rx style. The main benefit is to enable a single point of entry for dealing with the multiple errors that applications need to handle.
 
   s.description      = <<-DESC
 TODO: Add long description of the pod here.
