@@ -14,23 +14,37 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "607FACCF1AFB9204008FA782"
-               BuildableName = "RxErrorTracker_Example.app"
-               BlueprintName = "RxErrorTracker_Example"
-               ReferencedContainer = "container:RxErrorTracker.xcodeproj">
+               BlueprintIdentifier = "FA38CD5098527DEBEECD4B393B0162B4"
+               BuildableName = "Pods_RxErrorTracker_Example.framework"
+               BlueprintName = "Pods-RxErrorTracker_Example"
+               ReferencedContainer = "container:Pods/Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "607FACE41AFB9204008FA782"
-               BuildableName = "RxErrorTracker_Tests.xctest"
-               BlueprintName = "RxErrorTracker_Tests"
+               BlueprintIdentifier = "CA0D2AE5EEBEA51BF3B4D01EE9ED0FB5"
+               BuildableName = "Pods_RxErrorTracker_ExampleTests.framework"
+               BlueprintName = "Pods-RxErrorTracker_ExampleTests"
+               ReferencedContainer = "container:Pods/Pods.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "607FACCF1AFB9204008FA782"
+               BuildableName = "RxErrorTracker_Example.app"
+               BlueprintName = "RxErrorTracker_Example"
                ReferencedContainer = "container:RxErrorTracker.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -42,16 +56,6 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "607FACE41AFB9204008FA782"
-               BuildableName = "RxErrorTracker_Tests.xctest"
-               BlueprintName = "RxErrorTracker_Tests"
-               ReferencedContainer = "container:RxErrorTracker.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
          <TestableReference
             skipped = "NO">
             <BuildableReference
