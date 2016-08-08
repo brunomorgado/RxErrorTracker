@@ -51,7 +51,7 @@ let errorBannerVisibilityUpdate = errorTracker
 You can be as granular as you need in tracking the errors. For more complex scenarios you could have multiple RxErrorTracker's and merge or combine them in order to set error priorities
 
 ```swift
-errorBannerStateUpdate = Driver.combineLatest(
+let errorBannerStateUpdate = Driver.combineLatest(
 	noConnectionErrorTracker,
 	serverAPIErrorTracker,
 	internalErrorTracker) {($0, $1, $2)}

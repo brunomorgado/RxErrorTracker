@@ -26,6 +26,8 @@ public class RxErrorTracker : DriverConvertibleType {
     private let _error = Variable<E>(nil)
     private let _errorSequence: Driver<E>
     private var _resetTimer = NSTimer()
+    private let _disposeBag = DisposeBag()
+    private let _invalidateResetSignal = PublishSubject<Void>()
     
     public init() {
         _errorSequence = _error.asDriver()
@@ -34,13 +36,13 @@ public class RxErrorTracker : DriverConvertibleType {
     /**
      Updates the `RxErrorTracker` with the specified error.
      
-     It will result in the specified error being signaled to its `observers`
+     It will result in the specified error being signaled to its observers
      
-     - parameter error: The error that shall be signaled to the `observers`
+     - parameter error: The error that shall be signaled to the observers
      
-     - parameter resetTime: An optional time interval after which the `RxErrorTracker` will flush the specified error and signal a nil object to its `observers`.
+     - parameter resetTime: An optional time interval after which the `RxErrorTracker` will flush the specified error and signal a nil object to its observers.
      */
-    public func updateWithError(error: ErrorType?, resetTime: RxSwift.RxTimeInterval? = nil) {
+    public func onNext(error: ErrorType?, resetTime: RxSwift.RxTimeInterval? = nil) {
         
         _resetTimer.invalidate()
         
@@ -64,21 +66,38 @@ private extension RxErrorTracker {
             .doOn(onNext: { [unowned self] _ in
                     self.resetError()
                 },onError: { [unowned self] error in
-                    self.updateWithError(error, resetTime: resetTime)
+                    self.onNext(error, resetTime: resetTime)
                 })
     }
     
+    //TODO: test
+    func setResetSignal<O: ObservableType>(resetSignal: O) {
+        
+        /**
+         `resetSignal` is global for now. Let's override the previous
+         */
+        _invalidateResetSignal.onNext()
+        
+        resetSignal
+            .takeUntil(_invalidateResetSignal)
+            .subscribeNext { [unowned self] _ in
+            self.resetError()
+        }.addDisposableTo(_disposeBag)
+    }
+    
     @objc func resetError() {
-        self.updateWithError(nil)
+        self.onNext(nil)
     }
     
     func safeUpdateWithError(error: ErrorType?) {
         _lock.lock()
         
+        /**
+         Prevents consecutive nil signals
+         */
         guard !(error == nil && _error.value == nil) else {return}
         
         _error.value = error
-        
         _lock.unlock()
     }
 }
@@ -86,17 +105,37 @@ private extension RxErrorTracker {
 public extension ObservableConvertibleType {
     
     /**
-     Enables monitoring of the current `observable` sequence.
+     Enables monitoring of an observable sequence.
      
-     If the sequence errors out, the specified errorTracker gets updated with the error and signals it to its `observers`
+     If the sequence errors out, the specified `errorTracker` gets updated with the error and signals it to its observers
 
      - parameter errorTracker: The `RxErrorTracker` which will start monitoring the sequence.
      
-     - parameter resetTime: An optional time interval after which the errorTracker will flush any error and signal a nil object to its `observers`.
+     - parameter resetTime: An optional time interval after which the `errorTracker` will flush any error and signal a nil object to its observers.
      
-     - returns: Returns the current `observable` which is already being monitored by the errorTracker
+     - returns: Returns an observable which is already being monitored by the `errorTracker`
      */
     func trackError(errorTracker: RxErrorTracker, resetTime: RxSwift.RxTimeInterval? = nil) -> Observable<E> {
+        return errorTracker.trackErrorOfObservable(self, resetTime: resetTime)
+    }
+    
+    /**
+     Enables monitoring of an observable sequence.
+     
+     If the sequence errors out, the specified `errorTracker` gets updated with the error and signals it to its observers
+     
+     Will flush the current error (if any) and signal a nil to its observers whenever the `resetSignal` produces an element
+     
+     - parameter errorTracker: The `RxErrorTracker` which will start monitoring the sequence.
+     
+     - parameter resetTime: An optional time interval after which the `errorTracker` will flush any error and signal a nil object to its observers.
+     
+     - parameter resetSignal: an observable sequence which flushes the current error (if any) whenever it produces an element.
+     
+     - returns: Returns an observable sequence which is already being monitored by the `errorTracker`
+     */
+    func trackError<O : ObservableType>(errorTracker: RxErrorTracker, resetTime: RxSwift.RxTimeInterval? = nil, resetSignal: O) -> Observable<E> {
+        errorTracker.setResetSignal(resetSignal)
         return errorTracker.trackErrorOfObservable(self, resetTime: resetTime)
     }
 }

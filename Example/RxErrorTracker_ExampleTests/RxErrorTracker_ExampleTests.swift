@@ -40,7 +40,7 @@ class RxErrorTracker_ExampleTests: XCTestCase {
         }.addDisposableTo(disposeBag)
     }
     
-    func testUpdateError() {
+    func testOnNext() {
         var currentError: ErrorType? = nil
         
         errorTracker.driveNext { error in
@@ -49,12 +49,12 @@ class RxErrorTracker_ExampleTests: XCTestCase {
         
         XCTAssertNil(currentError)
         
-        errorTracker.updateWithError(TestError.Error1)
+        errorTracker.onNext(TestError.Error1)
         
         XCTAssertTrue(TestError.error(currentError, isTestError: .Error1))
         
-        errorTracker.updateWithError(TestError.Error3)
-        errorTracker.updateWithError(TestError.Error2)
+        errorTracker.onNext(TestError.Error3)
+        errorTracker.onNext(TestError.Error2)
         
         XCTAssertTrue(TestError.error(currentError, isTestError: .Error2))
     }
@@ -68,22 +68,22 @@ class RxErrorTracker_ExampleTests: XCTestCase {
         
         XCTAssertTrue(nextCounter == 1)
         
-        errorTracker.updateWithError(TestError.Error1)
+        errorTracker.onNext(TestError.Error1)
         
         XCTAssertTrue(nextCounter == 2)
         
-        errorTracker.updateWithError(nil)
+        errorTracker.onNext(nil)
         
         XCTAssertTrue(nextCounter == 3)
         
-        errorTracker.updateWithError(nil)
-        errorTracker.updateWithError(nil)
-        errorTracker.updateWithError(nil)
+        errorTracker.onNext(nil)
+        errorTracker.onNext(nil)
+        errorTracker.onNext(nil)
         
         // Should throttle consecutive nils. So counter is still 3
         XCTAssertTrue(nextCounter == 3)
         
-        errorTracker.updateWithError(TestError.Error2)
+        errorTracker.onNext(TestError.Error2)
         
         XCTAssertTrue(nextCounter == 4)
     }
@@ -99,7 +99,7 @@ class RxErrorTracker_ExampleTests: XCTestCase {
         
         XCTAssertNil(currentError)
         
-        errorTracker.updateWithError(TestError.Error1, resetTime: resetTime)
+        errorTracker.onNext(TestError.Error1, resetTime: resetTime)
         
         XCTAssertTrue(TestError.error(currentError, isTestError: .Error1))
         

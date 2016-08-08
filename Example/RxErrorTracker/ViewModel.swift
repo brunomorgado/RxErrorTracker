@@ -39,6 +39,8 @@ class ViewModel {
     
     var errorBannerVisibilityUpdate: Driver<Bool>
     var errorBannerMessageUpdate: Driver<String>
+    
+    let sub = PublishSubject<Bool>()
 
     private let errorTracker = RxErrorTracker()
     private let disposeBag = DisposeBag()
@@ -62,7 +64,7 @@ class ViewModel {
         let id: Int? = 1
         
         guard let _id = id else {
-            errorTracker.updateWithError(Error.Internal)
+            errorTracker.onNext(Error.Internal)
             return
         }
 
@@ -76,7 +78,7 @@ class ViewModel {
         let user: User? = nil// User(name: "brunofc")
         
         guard let _user = user else {
-            errorTracker.updateWithError(Error.Internal)
+            errorTracker.onNext(Error.Internal, resetTime: 3)
             return
         }
         
