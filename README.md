@@ -23,7 +23,7 @@ let disposeBag = DisposeBag()
 let id: Int? = 1
         
 guard let _id = id else {
-    errorTracker.updateWithError(Error.Internal)
+    errorTracker.onNext(Error.Internal)
 	return
 }
 
