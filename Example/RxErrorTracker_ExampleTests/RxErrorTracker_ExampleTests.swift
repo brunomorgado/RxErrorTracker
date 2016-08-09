@@ -22,11 +22,12 @@ class RxErrorTracker_ExampleTests: XCTestCase {
     
     var errorTracker: RxErrorTracker!
     var resetTimer = NSTimer()
-    let disposeBag = DisposeBag()
+    var disposeBag: DisposeBag!
     
     override func setUp() {
         super.setUp()
         self.errorTracker = RxErrorTracker()
+        self.disposeBag = DisposeBag()
     }
     
     override func tearDown() {
@@ -131,6 +132,26 @@ class RxErrorTracker_ExampleTests: XCTestCase {
         XCTAssertTrue(expectedErrors.count == 2)
         XCTAssertNil(expectedErrors[0])
         XCTAssertTrue(TestError.error(expectedErrors[1], isTestError: .SimulatedError))
+    }
+    
+    func testResetBySignal() {
+        let resetSignal = PublishSubject<Void>()
+        let resetableErrorTracker = RxErrorTracker(resetSignal: resetSignal)
+        var currentError: ErrorType? = TestError.Error1
+        
+        resetableErrorTracker.driveNext { error in
+            currentError = error
+        }.addDisposableTo(disposeBag)
+        
+        XCTAssertNil(currentError)
+        
+        resetableErrorTracker.onNext(TestError.Error1)
+        
+        XCTAssertTrue(TestError.error(currentError, isTestError: .Error1))
+        
+        resetSignal.onNext()
+        
+        XCTAssertNil(currentError)
     }
 }
 

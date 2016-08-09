@@ -11,9 +11,11 @@ RxErrorTracker provides a clean, integrated and easy to use approach to error ha
 
 ## Usage
 
-You can push new errors to the RxErrorTracker sequence via direct update or by tracking the errors of another observable sequence. If you've used RxSwift's [ActivityIndicator](https://github.com/ReactiveX/RxSwift/blob/master/RxExample/RxExample/Services/ActivityIndicator.swift), RxErrorTracker will feel familiar.
+You can push new errors to the RxErrorTracker sequence by directly emiting new errors or by tracking the errors of another observable sequence. If you've used RxSwift's [ActivityIndicator](https://github.com/ReactiveX/RxSwift/blob/master/RxExample/RxExample/Services/ActivityIndicator.swift), RxErrorTracker will feel familiar.
 
-Additionally, you can define reset times after which the RxErrorTracker will signal nil.
+You can define reset times after which the RxErrorTracker will signal nil.
+
+Additionally, an RxErrorTracker can be initialized with a reset signal which will reset the tracker whenever this signal produces a new value. This is particularly useful if you want to bound an error to a specific context. Say, an error which makes sense in the context of a view but should be dismissed when view disappears. (If you're using MVVM [RxViewModel](https://github.com/RxSwiftCommunity/RxViewModel) is a great complement to this feature)
 
 ```swift
 let errorTracker = RxErrorTracker()
