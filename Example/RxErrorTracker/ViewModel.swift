@@ -18,18 +18,18 @@ class User {
     }
 }
 
-enum Error: ErrorType {
-    case Internal
-    case FetchUserFailed
-    case FetchFriendsFailed
+enum MyError: Error {
+    case internalError
+    case fetchUserFailed
+    case fetchFriendsFailed
     
     var description: String {
         switch self {
-        case Internal:
+        case .internalError:
             return "Internal error!!"
-        case FetchUserFailed:
+        case .fetchUserFailed:
             return "Failed fetching user!!"
-        case .FetchFriendsFailed:
+        case .fetchFriendsFailed:
             return "Failed fetching friends!!"
         }
     }
@@ -42,13 +42,13 @@ class ViewModel {
     
     let sub = PublishSubject<Bool>()
 
-    private let errorTracker = RxErrorTracker()
-    private let disposeBag = DisposeBag()
+    fileprivate let errorTracker = RxErrorTracker()
+    fileprivate let disposeBag = DisposeBag()
     
     init() {
         errorBannerMessageUpdate = errorTracker
             .map { error -> String in
-                guard let _error = error as? Error else {
+                guard let _error = error as? MyError else {
                     return ""
                 }
                 return _error.description
@@ -64,7 +64,7 @@ class ViewModel {
         let id: Int? = 1
         
         guard let _id = id else {
-            errorTracker.onNext(Error.Internal)
+            errorTracker.onNext(MyError.internalError)
             return
         }
 
@@ -78,7 +78,7 @@ class ViewModel {
         let user: User? = nil
         
         guard let _user = user else {
-            errorTracker.onNext(Error.Internal, resetTime: 4)
+            errorTracker.onNext(MyError.internalError, resetTime: 4)
             return
         }
         
@@ -92,10 +92,10 @@ class ViewModel {
 private extension ViewModel {
     
     func fetchUserObservable(withId id: Int) -> Observable<User?> {
-        return Observable.error(Error.FetchUserFailed)
+        return Observable.error(MyError.fetchUserFailed)
     }
     
     func fetchFriendsObservable(withUser user: User) -> Observable<AnyObject?> {
-        return Observable.error(Error.FetchFriendsFailed)
+        return Observable.error(MyError.fetchFriendsFailed)
     }
 }

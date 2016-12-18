@@ -11,8 +11,8 @@ RxErrorTracker provides a clean, integrated and easy to use approach to error ha
   s.source           = { :git => 'https://github.com/brunomorgado/RxErrorTracker.git', :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/bfcmorgado'
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '9.0'
   s.source_files = 'RxErrorTracker/Classes/**/*'
-  s.dependency 'RxSwift', '~> 2.6'
-  s.dependency 'RxCocoa', '~> 2.6'
+  s.dependency 'RxSwift', '~> 3.0'
+  s.dependency 'RxCocoa', '~> 3.0'
 end

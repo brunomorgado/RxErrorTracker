@@ -20,30 +20,30 @@ class ViewController: UIViewController {
     let disposeBag = DisposeBag()
     var viewModel = ViewModel()
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         viewModel.errorBannerVisibilityUpdate
-            .driveNext { [unowned self] visible in
+            .drive(onNext: { [unowned self] visible in
                 self.errorBannerTopConstraint.constant = visible ? 0 : -kErrorBannerHeight
-                UIView.animateWithDuration(0.4, animations: {
+                UIView.animate(withDuration: 0.4, animations: {
                     self.view.layoutIfNeeded()
                 })
-            }.addDisposableTo(disposeBag)
+            }).addDisposableTo(disposeBag)
         
         viewModel.errorBannerMessageUpdate
-            .driveNext { [unowned self] errorMessage in
+            .drive(onNext: { [unowned self] errorMessage in
                 self.messageLabel.text = errorMessage
-            }.addDisposableTo(disposeBag)
+            }).addDisposableTo(disposeBag)
     }
     
     // User actions
 
-    @IBAction func didTapFetchFriendsButton(sender: AnyObject) {
+    @IBAction func didTapFetchFriendsButton(_ sender: AnyObject) {
         viewModel.fetchFriends()
     }
     
-    @IBAction func didTapFetchUserButton(sender: AnyObject) {
+    @IBAction func didTapFetchUserButton(_ sender: AnyObject) {
         viewModel.fetchUser()
     }
 }

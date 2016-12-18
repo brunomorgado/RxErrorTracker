@@ -11,17 +11,17 @@ import RxSwift
 import RxCocoa
 import RxErrorTracker
 
-enum TestError: ErrorType {
-    case Error1
-    case Error2
-    case Error3
-    case SimulatedError
+enum TestError: Error {
+    case error1
+    case error2
+    case error3
+    case simulatedError
 }
 
 class RxErrorTracker_ExampleTests: XCTestCase {
     
     var errorTracker: RxErrorTracker!
-    var resetTimer = NSTimer()
+    var resetTimer = Timer()
     var disposeBag: DisposeBag!
     
     override func setUp() {
@@ -36,40 +36,40 @@ class RxErrorTracker_ExampleTests: XCTestCase {
     }
     
     func testDefaultError() {
-        errorTracker.driveNext { error in
+        errorTracker.drive(onNext: { error in
             XCTAssertNil(error)
-        }.addDisposableTo(disposeBag)
+        }).addDisposableTo(disposeBag)
     }
     
     func testOnNext() {
-        var currentError: ErrorType? = nil
+        var currentError: Error? = nil
         
-        errorTracker.driveNext { error in
+        errorTracker.drive(onNext: { error in
             currentError = error
-        }.addDisposableTo(disposeBag)
+        }).addDisposableTo(disposeBag)
         
         XCTAssertNil(currentError)
         
-        errorTracker.onNext(TestError.Error1)
+        errorTracker.onNext(TestError.error1)
         
-        XCTAssertTrue(TestError.error(currentError, isTestError: .Error1))
+        XCTAssertTrue(TestError.error(currentError, isTestError: .error1))
         
-        errorTracker.onNext(TestError.Error3)
-        errorTracker.onNext(TestError.Error2)
+        errorTracker.onNext(TestError.error3)
+        errorTracker.onNext(TestError.error2)
         
-        XCTAssertTrue(TestError.error(currentError, isTestError: .Error2))
+        XCTAssertTrue(TestError.error(currentError, isTestError: .error2))
     }
     
     func testDistictNils() {
         var nextCounter = 0
         
-        errorTracker.driveNext { error in
+        errorTracker.drive(onNext: { error in
             nextCounter += 1
-            }.addDisposableTo(disposeBag)
+        }).addDisposableTo(disposeBag)
         
         XCTAssertTrue(nextCounter == 1)
         
-        errorTracker.onNext(TestError.Error1)
+        errorTracker.onNext(TestError.error1)
         
         XCTAssertTrue(nextCounter == 2)
         
@@ -84,41 +84,41 @@ class RxErrorTracker_ExampleTests: XCTestCase {
         // Should throttle consecutive nils. So counter is still 3
         XCTAssertTrue(nextCounter == 3)
         
-        errorTracker.onNext(TestError.Error2)
+        errorTracker.onNext(TestError.error2)
         
         XCTAssertTrue(nextCounter == 4)
     }
     
     func testResetTime() {
-        var currentError: ErrorType? = nil
+        var currentError: Error? = nil
         let resetTime: RxSwift.RxTimeInterval = 2
-        let expectation = self.expectationWithDescription("Error should be nil after reset time as passed")
+        let expectation = self.expectation(description: "Error should be nil after reset time as passed")
         
-        errorTracker.driveNext { error in
+        errorTracker.drive(onNext: { error in
             currentError = error
-            }.addDisposableTo(disposeBag)
+        }).addDisposableTo(disposeBag)
         
         XCTAssertNil(currentError)
         
-        errorTracker.onNext(TestError.Error1, resetTime: resetTime)
+        errorTracker.onNext(TestError.error1, resetTime: resetTime)
         
-        XCTAssertTrue(TestError.error(currentError, isTestError: .Error1))
+        XCTAssertTrue(TestError.error(currentError, isTestError: .error1))
         
-        let delay = dispatch_time(DISPATCH_TIME_NOW, Int64(resetTime * Double(NSEC_PER_SEC)))
-        dispatch_after(delay, dispatch_get_main_queue()) {
+        let delay = DispatchTime.now() + Double(Int64(resetTime * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+        DispatchQueue.main.asyncAfter(deadline: delay) {
             XCTAssertNil(currentError)
             expectation.fulfill()
         }
         
-        self.waitForExpectationsWithTimeout(5.0, handler: nil)
+        self.waitForExpectations(timeout: 5.0, handler: nil)
     }
     
     func testTrackError() {
-        var expectedErrors = [ErrorType?]()
+        var expectedErrors = [Error?]()
         
-        errorTracker.driveNext { error in
+        errorTracker.drive(onNext: { error in
             expectedErrors.append(error)
-            }.addDisposableTo(disposeBag)
+        }).addDisposableTo(disposeBag)
         
         // expectedErrors should be populated with the initial (nil) value
         XCTAssertTrue(expectedErrors.count == 1)
@@ -131,23 +131,23 @@ class RxErrorTracker_ExampleTests: XCTestCase {
         
         XCTAssertTrue(expectedErrors.count == 2)
         XCTAssertNil(expectedErrors[0])
-        XCTAssertTrue(TestError.error(expectedErrors[1], isTestError: .SimulatedError))
+        XCTAssertTrue(TestError.error(expectedErrors[1], isTestError: .simulatedError))
     }
     
     func testResetBySignal() {
         let resetSignal = PublishSubject<Void>()
         let resetableErrorTracker = RxErrorTracker(resetSignal: resetSignal)
-        var currentError: ErrorType? = TestError.Error1
+        var currentError: Error? = TestError.error1
         
-        resetableErrorTracker.driveNext { error in
+        resetableErrorTracker.drive(onNext: { error in
             currentError = error
-        }.addDisposableTo(disposeBag)
+        }).addDisposableTo(disposeBag)
         
         XCTAssertNil(currentError)
         
-        resetableErrorTracker.onNext(TestError.Error1)
+        resetableErrorTracker.onNext(TestError.error1)
         
-        XCTAssertTrue(TestError.error(currentError, isTestError: .Error1))
+        XCTAssertTrue(TestError.error(currentError, isTestError: .error1))
         
         resetSignal.onNext()
         
@@ -158,12 +158,12 @@ class RxErrorTracker_ExampleTests: XCTestCase {
 private extension RxErrorTracker_ExampleTests {
     
     func simulateObservable() -> Observable<AnyObject?> {
-        return Observable.error(TestError.SimulatedError)
+        return Observable.error(TestError.simulatedError)
     }
 }
 
 extension TestError {
-    static func error(error: ErrorType?, isTestError testError: TestError) -> Bool {
+    static func error(_ error: Error?, isTestError testError: TestError) -> Bool {
         guard let _error = error as? TestError else {return false}
         switch _error {
         case testError: return true

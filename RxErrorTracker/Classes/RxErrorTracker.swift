@@ -16,15 +16,16 @@ import Foundation
  Maintains a sequence of errors that can be observed and pushed to.
  */
 
-public class RxErrorTracker : DriverConvertibleType {
+open class RxErrorTracker : SharedSequenceConvertibleType {
     
-    public typealias E = ErrorType?
+    public typealias E = Error?
+    public typealias SharingStrategy = DriverSharingStrategy
     
-    private let _lock = NSRecursiveLock()
-    private let _error = Variable<E>(nil)
-    private let _errorSequence: Driver<E>
-    private var _resetTimer = NSTimer()
-    private let _disposeBag = DisposeBag()
+    fileprivate let _lock = NSRecursiveLock()
+    fileprivate let _error = Variable<E>(nil)
+    fileprivate let _errorSequence: Driver<E>
+    fileprivate var _resetTimer = Timer()
+    fileprivate let _disposeBag = DisposeBag()
     
     public init() {
         _errorSequence = _error.asDriver()
@@ -39,9 +40,9 @@ public class RxErrorTracker : DriverConvertibleType {
         _errorSequence = _error.asDriver()
         
         resetSignal
-            .subscribeNext { [unowned self] _ in
+            .subscribe(onNext: { [unowned self] _ in
                 self.resetError()
-            }.addDisposableTo(_disposeBag)
+            }).addDisposableTo(_disposeBag)
     }
 
     /**
@@ -53,39 +54,39 @@ public class RxErrorTracker : DriverConvertibleType {
      
      - parameter resetTime: An optional time interval after which the `RxErrorTracker` will flush the specified error and signal a nil object to its observers.
      */
-    public func onNext(error: ErrorType?, resetTime: RxSwift.RxTimeInterval? = nil) {
+    open func onNext(_ error: Error?, resetTime: RxSwift.RxTimeInterval? = nil) {
         
         _resetTimer.invalidate()
         
         self.safeUpdateWithError(error)
         
         if let _resetTime = resetTime {
-            _resetTimer = NSTimer.scheduledTimerWithTimeInterval(_resetTime, target:self, selector: #selector(RxErrorTracker.resetError), userInfo: nil, repeats: false)
+            _resetTimer = Timer.scheduledTimer(timeInterval: _resetTime, target:self, selector: #selector(RxErrorTracker.resetError), userInfo: nil, repeats: false)
         }
     }
     
-    public func asDriver() -> Driver<E> {
+    open func asSharedSequence() -> SharedSequence<SharingStrategy, E> {
         return _errorSequence
     }
 }
 
 private extension RxErrorTracker {
     
-    func trackErrorOfObservable<O: ObservableConvertibleType>(source: O, resetTime: RxSwift.RxTimeInterval? = nil) -> Observable<O.E> {
+    func trackErrorOfObservable<O: ObservableConvertibleType>(_ source: O, resetTime: RxSwift.RxTimeInterval? = nil) -> Observable<O.E> {
         
         return source.asObservable()
-            .doOn(onNext: { [unowned self] _ in
-                    self.resetError()
+            .do(onNext: { [unowned self] _ in
+                self.resetError()
                 },onError: { [unowned self] error in
                     self.onNext(error, resetTime: resetTime)
-                })
+            })
     }
     
     @objc func resetError() {
         self.onNext(nil)
     }
     
-    func safeUpdateWithError(error: ErrorType?) {
+    func safeUpdateWithError(_ error: Error?) {
         _lock.lock()
         
         /**
@@ -111,7 +112,7 @@ public extension ObservableConvertibleType {
      
      - returns: Returns an observable which is already being monitored by the `errorTracker`
      */
-    func trackError(errorTracker: RxErrorTracker, resetTime: RxSwift.RxTimeInterval? = nil) -> Observable<E> {
+    func trackError(_ errorTracker: RxErrorTracker, resetTime: RxSwift.RxTimeInterval? = nil) -> Observable<E> {
         return errorTracker.trackErrorOfObservable(self, resetTime: resetTime)
     }
 }
