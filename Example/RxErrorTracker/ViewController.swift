@@ -29,12 +29,12 @@ class ViewController: UIViewController {
                 UIView.animate(withDuration: 0.4, animations: {
                     self.view.layoutIfNeeded()
                 })
-            }).addDisposableTo(disposeBag)
+            }).disposed(by: disposeBag)
         
         viewModel.errorBannerMessageUpdate
             .drive(onNext: { [unowned self] errorMessage in
                 self.messageLabel.text = errorMessage
-            }).addDisposableTo(disposeBag)
+            }).disposed(by: disposeBag)
     }
     
     // User actions

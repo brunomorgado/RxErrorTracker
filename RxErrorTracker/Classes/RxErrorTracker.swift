@@ -42,7 +42,7 @@ open class RxErrorTracker : SharedSequenceConvertibleType {
         resetSignal
             .subscribe(onNext: { [unowned self] _ in
                 self.resetError()
-            }).addDisposableTo(_disposeBag)
+            }).disposed(by: _disposeBag)
     }
 
     /**

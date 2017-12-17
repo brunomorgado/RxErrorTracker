@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'RxErrorTracker'
-  s.version          = '2.0.1'
+  s.version          = '3.0.0'
   s.summary          = 'An RxSwifty approach to error handling.'
   s.description      = <<-DESC
 RxErrorTracker provides a clean, integrated and easy to use approach to error handling. It is based on RxSwift and represents an observable sequence of errors Rx style. The main benefit is to enable a single point of entry for dealing with the multiple errors that applications need to handle.
@@ -13,6 +13,6 @@ RxErrorTracker provides a clean, integrated and easy to use approach to error ha
 
   s.ios.deployment_target = '9.0'
   s.source_files = 'RxErrorTracker/Classes/**/*'
-  s.dependency 'RxSwift', '~> 3.0'
-  s.dependency 'RxCocoa', '~> 3.0'
+  s.dependency 'RxSwift', '~> 4.0.0'
+  s.dependency 'RxCocoa', '~> 4.0.0'
 end

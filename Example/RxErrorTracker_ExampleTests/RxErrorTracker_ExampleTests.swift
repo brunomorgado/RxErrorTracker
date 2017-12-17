@@ -38,7 +38,7 @@ class RxErrorTracker_ExampleTests: XCTestCase {
     func testDefaultError() {
         errorTracker.drive(onNext: { error in
             XCTAssertNil(error)
-        }).addDisposableTo(disposeBag)
+        }).disposed(by: disposeBag)
     }
     
     func testOnNext() {
@@ -46,7 +46,7 @@ class RxErrorTracker_ExampleTests: XCTestCase {
         
         errorTracker.drive(onNext: { error in
             currentError = error
-        }).addDisposableTo(disposeBag)
+        }).disposed(by: disposeBag)
         
         XCTAssertNil(currentError)
         
@@ -65,7 +65,7 @@ class RxErrorTracker_ExampleTests: XCTestCase {
         
         errorTracker.drive(onNext: { error in
             nextCounter += 1
-        }).addDisposableTo(disposeBag)
+        }).disposed(by: disposeBag)
         
         XCTAssertTrue(nextCounter == 1)
         
@@ -96,7 +96,7 @@ class RxErrorTracker_ExampleTests: XCTestCase {
         
         errorTracker.drive(onNext: { error in
             currentError = error
-        }).addDisposableTo(disposeBag)
+        }).disposed(by: disposeBag)
         
         XCTAssertNil(currentError)
         
@@ -118,7 +118,7 @@ class RxErrorTracker_ExampleTests: XCTestCase {
         
         errorTracker.drive(onNext: { error in
             expectedErrors.append(error)
-        }).addDisposableTo(disposeBag)
+        }).disposed(by: disposeBag)
         
         // expectedErrors should be populated with the initial (nil) value
         XCTAssertTrue(expectedErrors.count == 1)
@@ -127,7 +127,7 @@ class RxErrorTracker_ExampleTests: XCTestCase {
         simulateObservable()
             .trackError(errorTracker)
             .subscribe()
-            .addDisposableTo(disposeBag)
+            .disposed(by: disposeBag)
         
         XCTAssertTrue(expectedErrors.count == 2)
         XCTAssertNil(expectedErrors[0])
@@ -141,7 +141,7 @@ class RxErrorTracker_ExampleTests: XCTestCase {
         
         resetableErrorTracker.drive(onNext: { error in
             currentError = error
-        }).addDisposableTo(disposeBag)
+        }).disposed(by: disposeBag)
         
         XCTAssertNil(currentError)
         
@@ -149,7 +149,7 @@ class RxErrorTracker_ExampleTests: XCTestCase {
         
         XCTAssertTrue(TestError.error(currentError, isTestError: .error1))
         
-        resetSignal.onNext()
+        resetSignal.onNext(())
         
         XCTAssertNil(currentError)
     }
