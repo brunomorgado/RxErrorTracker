@@ -8,7 +8,6 @@ before_install:
   - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
   - gem install xcpretty-travis-formatter --no-rdoc --no-ri --no-document --quiet
   - gem install cocoapods
-  - pod repo update
-  - pod install 
+  - pod install --project-directory=Example --repo-update
 script:
   - set -o pipefail && xcodebuild -workspace 'Example/RxErrorTracker.xcworkspace' -scheme 'RxErrorTracker-Example' -configuration 'Debug' -sdk iphonesimulator -destination name='iPhone 6s' build test | xcpretty -c --test
