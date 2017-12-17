@@ -71,7 +71,7 @@ class ViewModel {
         fetchUserObservable(withId: _id)
             .trackError(errorTracker, resetTime: 4)
             .subscribe()
-            .addDisposableTo(disposeBag)
+            .disposed(by: disposeBag)
     }
     
     func fetchFriends() {
@@ -85,7 +85,7 @@ class ViewModel {
         fetchFriendsObservable(withUser: _user)
             .trackError(errorTracker, resetTime: 4)
             .subscribe()
-            .addDisposableTo(disposeBag)
+            .disposed(by: disposeBag)
     }
 }
 
