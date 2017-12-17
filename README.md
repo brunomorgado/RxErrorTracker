@@ -30,7 +30,7 @@ guard let _id = id else {
 fetchUserRequest(withId: _id)
 	.trackError(errorTracker, resetTime: 5)
 	.subscribe()
-	.addDisposableTo(disposeBag)
+	.disposed(by: disposeBag)
 ```
 
 Then you can observe the RxErrorTracker and handle the errors however you want.
