@@ -1,13 +1,14 @@
 language: objective-c
 xcode_workspace: Example/RxErrorTracker.xcworkspace
 xcode_scheme: RxErrorTracker-Example
-osx_image: xcode8
+osx_image: xcode9
 before_install:
   - brew update
   - brew outdated xctool || brew upgrade xctool
   - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
   - gem install xcpretty-travis-formatter --no-rdoc --no-ri --no-document --quiet
   - gem install cocoapods
-  - pod install --project-directory=Example
+  - pod repo update
+  - pod install 
 script:
   - set -o pipefail && xcodebuild -workspace 'Example/RxErrorTracker.xcworkspace' -scheme 'RxErrorTracker-Example' -configuration 'Debug' -sdk iphonesimulator -destination name='iPhone 6s' build test | xcpretty -c --test
